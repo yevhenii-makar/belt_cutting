@@ -108,14 +108,14 @@ values (0),
        (6)
 on duplicate key update id=id;
 
-insert into tasks (id, name, message, count, status, user_id, card_id, created_at, updated_at)
+insert into tasks (id, name, message, count, status_id, user_id, card_id, created_at, updated_at)
 values (0, 'taskCreated', 'create task', '5', 0, 2, 3, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
        (1, 'taskTECHNICAL_REVIEW', 'TECHNICAL_REVIEW task', 2, 1, 2, 4, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
        (2, 'taskPRODUCTION_REVIEW', 'PRODUCTION_REVIEW task', 3, 2, 4, 4, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
 on duplicate key update name   = name,
                         message=message,
                         count=count,
-                        status=status,
+                        status_id=status_id,
                         user_id=user_id,
                         card_id=card_id;
 
