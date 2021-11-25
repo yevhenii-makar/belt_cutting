@@ -68,6 +68,7 @@ public class TaskServiceImpl implements TaskService {
         BeltCuttingUser beltCuttingUser = userService.getUser(authentication);
         Task task = getTask(id);
 
+        log.info("Start update task :"+task.getId());
         if ((userAuthenticationService.isManager(authentication)
                 && userAuthenticationService.getManagerStatuses().contains(task.getStatus())
                 && beltCuttingUser.equals(task.getBeltCuttingUser()))
@@ -92,6 +93,7 @@ public class TaskServiceImpl implements TaskService {
         } else {
             throw BeltCuttingExceptions.notHavingNecessaryPermissionsForGetTask(request.getId(), beltCuttingUser.getName());
         }
+        log.info("Complete update task " + task.getId());
         return new TaskResponseSingle(task);
     }
 
@@ -100,7 +102,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseSingle changeTaskStatus(Long id, TaskStatus status, Authentication authentication) {
         BeltCuttingUser beltCuttingUser = userService.getUser(authentication);
         Task task = getTask(id);
-
+        log.info("start update task status");
         if (status != task.getStatus()) {
             if (userAuthenticationService.isAdmin(authentication)) {
                 task.setStatus(status);
@@ -133,7 +135,9 @@ public class TaskServiceImpl implements TaskService {
                             Piece piece = (Piece) Hibernate.unproxy(c.getPiece());
                             Card card = (Card) Hibernate.unproxy(piece.getCard());
                             piece.setSize(c.getPiece().getSize() - c.getSize());
+                            log.info("piece " +piece.getId() +" have new size");
                             card.setCount(card.getCount() - c.getSize());
+                            log.info("card " +card.getId() +" have new count");
                         }
                         task.getCard().setCount(task.getCard().getCount() + task.getCount());
                     }
@@ -142,6 +146,8 @@ public class TaskServiceImpl implements TaskService {
 
                 }
             }
+        }{
+            log.warn("New task status equals old task status");
         }
         return new TaskResponseSingle(task);
     }
@@ -149,8 +155,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponseSingle create(TaskCreateRequest request, Authentication authentication) {
+
         BeltCuttingUser beltCuttingUser = userService.getUser(authentication);
         Card card = getCard(request.getCardId());
+
+        log.info("user " + beltCuttingUser.getId() +" start create new task");
 
         Task task = new Task();
         task.setBeltCuttingUser(beltCuttingUser);
