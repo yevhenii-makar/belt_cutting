@@ -188,9 +188,7 @@ public class TaskServiceTestMock {
         request.setName("task1");
         request.setCardId(1L);
         request.setCount(3);
-        request.setStatus(TaskStatus.CREATED);
         request.setMessage(massage1);
-        request.setUserId(userManager1.getId());
 
         List<TaskStatus> managerStatuses = Arrays.asList(TaskStatus.CREATED, TaskStatus.READY, TaskStatus.CLARIFICATION_REQUEST, TaskStatus.CANCELED);
         List<TaskStatus> adminStatuses = Arrays.asList(TaskStatus.TECHNICAL_REVIEW, TaskStatus.PRODUCTION_REVIEW, TaskStatus.CREATED, TaskStatus.READY, TaskStatus.CLARIFICATION_REQUEST, TaskStatus.CANCELED);
@@ -223,7 +221,6 @@ public class TaskServiceTestMock {
         verify(taskRepository).findById(presentId1);
 
         request.setMessage(massage2);
-        request.setStatus(TaskStatus.CLARIFICATION_REQUEST);
         task1.setStatus(TaskStatus.CLARIFICATION_REQUEST);
         when(taskRepository.findById(presentId1)).thenReturn(Optional.of(task1));
         Optional<TaskResponseSingle> responseManagerClarificationRequest = Optional.of(taskService.update(presentId1, request, authenticationManager1));
@@ -236,7 +233,6 @@ public class TaskServiceTestMock {
         request.setMessage(massage2);
         task1.setMessage(massage1);
 
-        request.setStatus(TaskStatus.TECHNICAL_REVIEW);
         task1.setStatus(TaskStatus.TECHNICAL_REVIEW);
 
         assertThatExceptionOfType(ResponseStatusException.class)
@@ -255,7 +251,6 @@ public class TaskServiceTestMock {
         request.setMessage(massage2);
         task1.setMessage(massage1);
 
-        request.setStatus(TaskStatus.PRODUCTION_REVIEW);
         task1.setStatus(TaskStatus.PRODUCTION_REVIEW);
 
         when(taskRepository.findById(presentId1)).thenReturn(Optional.of(task1));
