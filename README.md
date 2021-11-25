@@ -8,3 +8,6 @@ Operator produces by cutting according to accessories from technical specialist.
 Getting Started
 
 For running in windows open terminal on root app directory and write run or open run.bat
+
+
+history of commit you can see on repository https://github.com/yevhenii-makar/nix_7
